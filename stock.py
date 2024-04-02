@@ -14,6 +14,16 @@ class Stock:
     def get(self, start, end=datetime.date.today().strftime("%Y-%m-%d")):
         return self.data[(self.data.index >= start) & (self.data.index <= end)]
     
+    def get_last(self):
+        return self.get_last_rec(datetime.date.today())
+    
+    def get_last_rec(self, date):
+        price = self.get_day(date.strftime("%Y-%m-%d"))
+        if price is not None:
+            return price    
+        return self.get_last_rec(date - datetime.timedelta(days=1))
+    
+
     def get_day(self,date):
         day = self.data[self.data.index == date]
         if day.empty:
@@ -23,19 +33,8 @@ class Stock:
 
 
 if __name__ == "__main__":
-    for symbol in ['GLOB']:
-        try:
-            stock = Stock(symbol, datetime.date(2023,1,1))
-           
-        except ValueError:
-            print("Invalid symbol or date")
 
-            stock = None
+    stock = Stock("GGAL", datetime.date(2023,1,1))
 
-        if stock is not None:
-            yesterday= datetime.date.today() - datetime.timedelta(days=1)
-            print("Here")
-            for i in range(1,20):
-                day = stock.get_day((datetime.date(2023,12,8) - datetime.timedelta(days=i)).strftime("%Y-%m-%d") )
-                print(day)
-            print(day)
+    print(stock.get_last())
+   

@@ -33,7 +33,9 @@ class USD:
             return None
         usd_value = day['rate'].values[0]
         return usd_value
-    
+    @classmethod
+    def get_last(cls):
+        return USD._get_day(datetime.date.today()- datetime.timedelta(days=1))
     # class method to get specific date value
     @classmethod
     def _get_day(cls,date):
@@ -52,6 +54,6 @@ class USD:
 if __name__ == "__main__":
 
     usd_ = USD()
-    yesterday = datetime.date.today() - datetime.timedelta(days=1)
-    price = usd_.get_day(yesterday)
-    print(price)
+    #yesterday = datetime.date.today() - datetime.timedelta(days=1)
+    #price = usd_.get_day(yesterday)
+    print(USD.get_last())
